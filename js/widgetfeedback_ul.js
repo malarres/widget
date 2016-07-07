@@ -8,7 +8,9 @@
         app:  'ul',
         user: '4',
         id:   $(location).attr('pathname'),
-        isVendor: true
+        isVendor: true,
+        strings : widgetStrings.value,
+        currentLocale : widgetStrings.locale
     };
     
     var WidgetAPI = {
@@ -214,11 +216,11 @@
         },
         moreComments: function(){
             if($('#listComments > ul > li').eq(1).is(':hidden')){
-                $("#morecomments").text("Less Comments").removeClass('more').addClass('less');
+                $("#morecomments").text(WidgetConf.strings("LESS COMMENTS")).removeClass('more').addClass('less');
                 $('#listComments > ul > li').show();
             }
             else{
-                $("#morecomments").text("More Comments").removeClass('less').addClass('more');
+                $("#morecomments").text(WidgetConf.strings("MORE COMMENTS")).removeClass('less').addClass('more');
                 $('#listComments > ul > li:not(:first-child)').hide();
             }
             $('#buttonprovideoyourrate').show();
@@ -293,14 +295,14 @@
         },
         setAddEditComment: function(edit){
             if(edit){
-                $('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
+                $('#buttonRate').off('click').text(WidgetConf.strings('UPDATE')).on('click', function(){
                     WidgetUI.editRate();
                     return false;
                 });
                 $('#buttonDelete').show();
             }
             else{
-                $('#buttonRate').off('click').text('Write a comment and rate it').on('click', function(){
+                $('#buttonRate').off('click').text(WidgetConf.strings('CREATE')).on('click', function(){
                     WidgetUI.provideRate();
                     return false;
                 });
@@ -331,7 +333,7 @@
             li.append(likes);
             //Vendor reply
             if(WidgetConf.isVendor){
-                var reply = $('<a>').attr({href:'#'}).text('Reply comment').addClass('reply_button').data({IdComment:comment.id});
+                var reply = $('<a>').attr({href:'#'}).text(WidgetConf.strings('REPLY')).addClass('reply_button').data({IdComment:comment.id});
                 li.append(reply);
             }
             //Replies
@@ -339,8 +341,11 @@
                 var ul_replies = $('<ul>');
                 $.each(comment.replies, function(){
                     var li_reply = $('<li>');
-                    var reply_date = $('<span>').text(new Date(this.date).toLocaleDateString('en-UK')).addClass('date');
+                    var reply_date = $('<span>').text(new Date(this.date).toLocaleDateString(WidgetConf.currentLocale())).addClass('date');
                     var reply_text = $('<p>').text(this.reply);
+                    // chusca
+                    console.log(reply_date);
+                    //
                     li_reply.append(reply_date);
                     li_reply.append(reply_text);
                     ul_replies.append(li_reply);
@@ -357,8 +362,8 @@
             var form = $('<form>');
             var textarea = $('<textarea>');
             var comment = $('<input>').attr({type:'hidden'}).val(IdComment);
-            var send = $('<button>').text('Send').addClass('send blue_button');
-            var back = $('<button>').text('Cancel').addClass('cancel red_button');
+            var send = $('<button>').text(WidgetConf.strings("SEND")).addClass('send blue_button');
+            var back = $('<button>').text(WidgetConf.strings("CANCEL")).addClass('cancel red_button');
             form.append(comment);
             form.append(textarea);
             form.append(back);
