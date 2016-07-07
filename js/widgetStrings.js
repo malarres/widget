@@ -1,9 +1,6 @@
 var widgetStrings = (function () {
     
   var _values = {
-      "a" : "a valor",
-      "b 1" : "b 1 valor",
-      7 : "7 valor",
       TITLE : "Customer reviews",
       CREATE : "Write a customer review",
       READ : "",
